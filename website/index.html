@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Problem Solving Assignment</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>AI Problem Solving Assignment</h1>
+    <p class="subtitle">Problem 4: Crypt Arithmetic Puzzle Solver | Problem 8: Smart Navigation System</p>
+
+    <section class="card">
+      <h2>Problem 4: Crypt Arithmetic Puzzle Solver</h2>
+      <label for="puzzleInput">Enter puzzle:</label>
+      <input type="text" id="puzzleInput" placeholder="Example: SEND+MORE=MONEY" />
+      <button onclick="solvePuzzle()">Solve Puzzle</button>
+      <pre id="puzzleOutput"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Problem 8: Smart Navigation System</h2>
+      <label for="edgesInput">Enter graph connections:</label>
+      <input type="text" id="edgesInput" placeholder="Example: A-B, A-C, B-D, C-E, D-F" />
+
+      <label for="startNode">Start node:</label>
+      <input type="text" id="startNode" placeholder="Example: A" />
+
+      <label for="goalNode">Goal node:</label>
+      <input type="text" id="goalNode" placeholder="Example: F" />
+
+      <button onclick="findPaths()">Find Paths</button>
+      <pre id="graphOutput"></pre>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
