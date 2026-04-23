@@ -2,7 +2,7 @@
 
 ## Team Details
 - Register Number: RA2411026050197
-- Team Member 1: Your Name
+- Team Member 1: Mashiga Sri S
 - Team Member 2: Team Member Name
 
 ## Selected Problems
