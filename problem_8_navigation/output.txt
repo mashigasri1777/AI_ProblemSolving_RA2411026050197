@@ -1,0 +1,15 @@
+--- BFS Result ---
+Path found: A -> B -> D -> F
+Path length: 3
+Nodes explored: 6
+Traversal order: A -> B -> C -> D -> E -> F
+
+--- DFS Result ---
+Path found: A -> B -> D -> F
+Path length: 3
+Nodes explored: 4
+Traversal order: A -> B -> D -> F
+
+--- Comparison ---
+BFS gives the shortest path in unweighted graphs.
+DFS may find a path faster in some cases, but it is not guaranteed to be shortest.
