@@ -1,47 +1,136 @@
-function solvePuzzle() {
-  const puzzle = document.getElementById("puzzleInput").value.trim().toUpperCase();
-  const output = document.getElementById("puzzleOutput");
-
-  if (puzzle === "SEND+MORE=MONEY") {
-    output.textContent =
-      "Valid Solution Found:\n\n" +
-      "D = 7\nE = 5\nM = 1\nN = 6\nO = 0\nR = 8\nS = 9\nY = 2\n\n" +
-      "9567 + 1085 = 10652";
-  } else {
-    output.textContent =
-      "Demo version: Please use SEND+MORE=MONEY to see a sample valid output.";
-  }
+function wordToNumber(word, mapping) {
+  return parseInt(word.split("").map(ch => mapping[ch]).join(""), 10);
 }
 
-function buildGraph(edges) {
+function solveCryptarithm(words, result, uniqueLetters, firstLetters) {
+  const digits = [0,1,2,3,4,5,6,7,8,9];
+  const used = new Set();
+  const mapping = {};
+
+  function backtrack(index) {
+    if (index === uniqueLetters.length) {
+      for (let fl of firstLetters) {
+        if (mapping[fl] === 0) return null;
+      }
+
+      const wordValues = words.map(w => wordToNumber(w, mapping));
+      const resultValue = wordToNumber(result, mapping);
+      const sum = wordValues.reduce((a, b) => a + b, 0);
+
+      if (sum === resultValue) {
+        return { ...mapping, sum, resultValue, wordValues };
+      }
+      return null;
+    }
+
+    const letter = uniqueLetters[index];
+
+    for (let digit of digits) {
+      if (used.has(digit)) continue;
+      if (digit === 0 && firstLetters.has(letter)) continue;
+
+      mapping[letter] = digit;
+      used.add(digit);
+
+      const found = backtrack(index + 1);
+      if (found) return found;
+
+      delete mapping[letter];
+      used.delete(digit);
+    }
+
+    return null;
+  }
+
+  return backtrack(0);
+}
+
+function solvePuzzle() {
+  const input = document.getElementById("puzzleInput").value.trim().toUpperCase();
+  const output = document.getElementById("puzzleOutput");
+
+  if (!input) {
+    output.textContent = "Please enter a puzzle.";
+    return;
+  }
+
+  if (!input.includes("=") || !input.includes("+")) {
+    output.textContent = "Invalid format. Use format like SEND+MORE=MONEY";
+    return;
+  }
+
+  const [left, right] = input.split("=");
+  const words = left.split("+").map(w => w.trim()).filter(Boolean);
+  const result = right.trim();
+
+  if (!words.length || !result) {
+    output.textContent = "Invalid puzzle format.";
+    return;
+  }
+
+  const uniqueLetters = [...new Set((words.join("") + result).split(""))];
+  if (uniqueLetters.length > 10) {
+    output.textContent = "Too many unique letters. Maximum allowed is 10.";
+    return;
+  }
+
+  const firstLetters = new Set([...words.map(w => w[0]), result[0]]);
+  const solution = solveCryptarithm(words, result, uniqueLetters, firstLetters);
+
+  if (!solution) {
+    output.textContent = "No solution found.";
+    return;
+  }
+
+  const mappingText = uniqueLetters
+    .map(letter => `${letter} = ${solution[letter]}`)
+    .join("\n");
+
+  const wordValuesText = words
+    .map((w, i) => `${w} = ${solution.wordValues[i]}`)
+    .join("\n");
+
+  output.textContent =
+    `Solution Found:\n\n${mappingText}\n\n${wordValuesText}\n${result} = ${solution.resultValue}`;
+}
+
+function buildGraph(edgesText) {
   const graph = {};
-  edges.forEach(edge => {
-    const [u, v] = edge.split("-").map(x => x.trim().toUpperCase());
-    if (!graph[u]) graph[u] = [];
-    if (!graph[v]) graph[v] = [];
-    graph[u].push(v);
-    graph[v].push(u);
-  });
+  const edges = edgesText.split(",").map(e => e.trim()).filter(Boolean);
+
+  for (let edge of edges) {
+    const parts = edge.split("-").map(x => x.trim().toUpperCase());
+    if (parts.length !== 2) continue;
+
+    const [a, b] = parts;
+    if (!graph[a]) graph[a] = [];
+    if (!graph[b]) graph[b] = [];
+
+    graph[a].push(b);
+    graph[b].push(a);
+  }
+
   return graph;
 }
 
 function bfs(graph, start, goal) {
-  const queue = [[start, [start]]];
-  const visited = new Set();
-  const explored = [];
+  const queue = [[start]];
+  const visited = new Set([start]);
+  let explored = [];
 
   while (queue.length > 0) {
-    const [node, path] = queue.shift();
-    if (visited.has(node)) continue;
-
-    visited.add(node);
+    const path = queue.shift();
+    const node = path[path.length - 1];
     explored.push(node);
 
-    if (node === goal) return { path, explored };
+    if (node === goal) {
+      return { path, explored };
+    }
 
-    for (const neighbor of graph[node] || []) {
+    for (let neighbor of (graph[node] || [])) {
       if (!visited.has(neighbor)) {
-        queue.push([neighbor, [...path, neighbor]]);
+        visited.add(neighbor);
+        queue.push([...path, neighbor]);
       }
     }
   }
@@ -50,23 +139,26 @@ function bfs(graph, start, goal) {
 }
 
 function dfs(graph, start, goal) {
-  const stack = [[start, [start]]];
+  const stack = [[start]];
   const visited = new Set();
-  const explored = [];
+  let explored = [];
 
   while (stack.length > 0) {
-    const [node, path] = stack.pop();
-    if (visited.has(node)) continue;
+    const path = stack.pop();
+    const node = path[path.length - 1];
 
+    if (visited.has(node)) continue;
     visited.add(node);
     explored.push(node);
 
-    if (node === goal) return { path, explored };
+    if (node === goal) {
+      return { path, explored };
+    }
 
     const neighbors = [...(graph[node] || [])].reverse();
-    for (const neighbor of neighbors) {
+    for (let neighbor of neighbors) {
       if (!visited.has(neighbor)) {
-        stack.push([neighbor, [...path, neighbor]]);
+        stack.push([...path, neighbor]);
       }
     }
   }
@@ -75,21 +167,20 @@ function dfs(graph, start, goal) {
 }
 
 function findPaths() {
-  const edgesInput = document.getElementById("edgesInput").value.trim();
+  const edgesText = document.getElementById("edgesInput").value.trim();
   const start = document.getElementById("startNode").value.trim().toUpperCase();
   const goal = document.getElementById("goalNode").value.trim().toUpperCase();
   const output = document.getElementById("graphOutput");
 
-  if (!edgesInput || !start || !goal) {
+  if (!edgesText || !start || !goal) {
     output.textContent = "Please enter graph connections, start node, and goal node.";
     return;
   }
 
-  const edges = edgesInput.split(",");
-  const graph = buildGraph(edges);
+  const graph = buildGraph(edgesText);
 
   if (!graph[start] || !graph[goal]) {
-    output.textContent = "Start node or goal node not found in graph.";
+    output.textContent = "Start or goal node not found in graph.";
     return;
   }
 
@@ -97,14 +188,10 @@ function findPaths() {
   const dfsResult = dfs(graph, start, goal);
 
   output.textContent =
-    "--- BFS Result ---\n" +
-    (bfsResult.path
-      ? `Path: ${bfsResult.path.join(" -> ")}\nPath Length: ${bfsResult.path.length - 1}\n`
-      : "No path found.\n") +
-    `Nodes Explored: ${bfsResult.explored.length}\nTraversal: ${bfsResult.explored.join(" -> ")}\n\n` +
-    "--- DFS Result ---\n" +
-    (dfsResult.path
-      ? `Path: ${dfsResult.path.join(" -> ")}\nPath Length: ${dfsResult.path.length - 1}\n`
-      : "No path found.\n") +
-    `Nodes Explored: ${dfsResult.explored.length}\nTraversal: ${dfsResult.explored.join(" -> ")}`;
+    `BFS Path: ${bfsResult.path ? bfsResult.path.join(" -> ") : "No path found"}\n` +
+    `BFS Nodes Explored: ${bfsResult.explored.join(", ")}\n` +
+    `BFS Path Length: ${bfsResult.path ? bfsResult.path.length - 1 : "-"}\n\n` +
+    `DFS Path: ${dfsResult.path ? dfsResult.path.join(" -> ") : "No path found"}\n` +
+    `DFS Nodes Explored: ${dfsResult.explored.join(", ")}\n` +
+    `DFS Path Length: ${dfsResult.path ? dfsResult.path.length - 1 : "-"}`;
 }
