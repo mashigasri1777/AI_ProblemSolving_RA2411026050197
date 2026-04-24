@@ -18,7 +18,7 @@ This repository contains solutions for two Artificial Intelligence problem-solvi
 Add your deployed website link here after deploying on Vercel.
 
 Example:
-ai-problem-solving-ra-2411026050197-ht89ggrsg.vercel.app
+https://ai-problem-solving-ra-2411026050197-three.vercel.app/
 
 ---
 
