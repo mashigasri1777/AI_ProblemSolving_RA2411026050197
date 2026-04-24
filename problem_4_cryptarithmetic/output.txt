@@ -1,0 +1,16 @@
+Puzzle: SEND + MORE = MONEY
+
+Solution Found
+
+Letter to Digit Mapping:
+S = 9
+E = 5
+N = 6
+D = 7
+M = 1
+O = 0
+R = 8
+Y = 2
+
+Computed Result:
+9567 + 1085 = 10652
