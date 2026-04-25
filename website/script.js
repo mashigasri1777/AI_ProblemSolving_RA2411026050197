@@ -195,3 +195,14 @@ function findPaths() {
     `DFS Nodes Explored: ${dfsResult.explored.join(", ")}\n` +
     `DFS Path Length: ${dfsResult.path ? dfsResult.path.length - 1 : "-"}`;
 }
+function clearPuzzle() {
+  document.getElementById("puzzleInput").value = "";
+  document.getElementById("puzzleOutput").textContent = "Result will appear here...";
+}
+
+function clearGraph() {
+  document.getElementById("edgesInput").value = "";
+  document.getElementById("startNode").value = "";
+  document.getElementById("goalNode").value = "";
+  document.getElementById("graphOutput").textContent = "Path result will appear here...";
+}
