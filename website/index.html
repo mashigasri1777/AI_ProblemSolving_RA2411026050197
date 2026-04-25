@@ -4,37 +4,111 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Problem Solving Assignment</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css?v=3" />
 </head>
 <body>
-  <div class="container">
-    <h1>AI Problem Solving Assignment</h1>
-    <p class="subtitle">Problem 4: Crypt Arithmetic Puzzle Solver | Problem 8: Smart Navigation System</p>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
 
-    <section class="card">
-      <h2>Problem 4: Crypt Arithmetic Puzzle Solver</h2>
-      <label for="puzzleInput">Enter puzzle:</label>
-      <input type="text" id="puzzleInput" placeholder="Example: SEND+MORE=MONEY" />
-      <button onclick="solvePuzzle()">Solve Puzzle</button>
-      <pre id="puzzleOutput"></pre>
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="badge">AI Assignment Project</span>
+      <h1>AI Problem Solving <span>Interactive Website</span></h1>
+      <p>
+        Explore two implemented problems: Crypt Arithmetic Puzzle Solver and Smart Navigation System.
+      </p>
+
+      <div class="hero-links">
+        <a href="#problem4" class="nav-pill">Problem 4</a>
+        <a href="#problem8" class="nav-pill">Problem 8</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="info-grid">
+      <div class="info-card">
+        <h3>Problem 4</h3>
+        <p>Solve crypt arithmetic expressions like SEND + MORE = MONEY.</p>
+      </div>
+      <div class="info-card">
+        <h3>Problem 8</h3>
+        <p>Find a route between nodes using graph-based path search.</p>
+      </div>
+      <div class="info-card">
+        <h3>Built For</h3>
+        <p>AI Problem Solving Assignment with clean UI and live interaction.</p>
+      </div>
     </section>
 
-    <section class="card">
-      <h2>Problem 8: Smart Navigation System</h2>
-      <label for="edgesInput">Enter graph connections:</label>
-      <input type="text" id="edgesInput" placeholder="Example: A-B, A-C, B-D, C-E, D-F" />
+    <section id="problem4" class="app-card purple">
+      <div class="section-top">
+        <div>
+          <span class="section-tag">Problem 4</span>
+          <h2>Crypt Arithmetic Puzzle Solver</h2>
+          <p>Enter a puzzle in the format <strong>SEND+MORE=MONEY</strong>.</p>
+        </div>
+      </div>
 
-      <label for="startNode">Start node:</label>
-      <input type="text" id="startNode" placeholder="Example: A" />
+      <div class="form-grid one">
+        <div class="field">
+          <label for="puzzleInput">Puzzle Input</label>
+          <input type="text" id="puzzleInput" placeholder="Example: SEND+MORE=MONEY" />
+        </div>
+      </div>
 
-      <label for="goalNode">Goal node:</label>
-      <input type="text" id="goalNode" placeholder="Example: F" />
+      <div class="action-row">
+        <button class="primary-btn" onclick="solvePuzzle()">Solve Puzzle</button>
+        <button class="secondary-btn" onclick="clearPuzzle()">Clear</button>
+      </div>
 
-      <button onclick="findPaths()">Find Paths</button>
-      <pre id="graphOutput"></pre>
+      <div class="output-card">
+        <h4>Output</h4>
+        <pre id="puzzleOutput">Result will appear here...</pre>
+      </div>
     </section>
-  </div>
 
-  <script src="script.js"></script>
+    <section id="problem8" class="app-card teal">
+      <div class="section-top">
+        <div>
+          <span class="section-tag">Problem 8</span>
+          <h2>Smart Navigation System</h2>
+          <p>Enter graph connections, start node, and goal node to find a path.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field wide">
+          <label for="edgesInput">Graph Connections</label>
+          <input type="text" id="edgesInput" placeholder="Example: A-B, A-C, B-D, C-E, D-F" />
+        </div>
+
+        <div class="field">
+          <label for="startNode">Start Node</label>
+          <input type="text" id="startNode" placeholder="Example: A" />
+        </div>
+
+        <div class="field">
+          <label for="goalNode">Goal Node</label>
+          <input type="text" id="goalNode" placeholder="Example: F" />
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="primary-btn" onclick="findPaths()">Find Paths</button>
+        <button class="secondary-btn" onclick="clearGraph()">Clear</button>
+      </div>
+
+      <div class="output-card">
+        <h4>Output</h4>
+        <pre id="graphOutput">Path result will appear here...</pre>
+      </div>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
 </body>
 </html>
